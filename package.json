@@ -1,0 +1,32 @@
+{
+  "name": "@eu-ge-ne/runx",
+  "version": "0.0.1",
+  "description": "runx",
+  "author": "Eugene Pobochny <eugene.pobochny@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/eu-ge-ne/runx#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eu-ge-ne/runx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eu-ge-ne/runx/issues"
+  },
+  "type": "module",
+  "bin": {
+    "runx": "./build/cli.js"
+  },
+  "exports": "./build/index.js",
+  "files": ["./build/**/*"],
+  "scripts": {
+    "clean": "rm -rf ./build",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "tsx": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}
