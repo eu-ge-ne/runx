@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "clean": "rm -rf ./build",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
     "tsx": "^4.7.0"
