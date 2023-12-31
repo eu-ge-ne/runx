@@ -28,6 +28,8 @@
     "tsx": "^4.7.0"
   },
   "devDependencies": {
+    "@tsconfig/node20": "*",
+    "@tsconfig/strictest": "*",
     "@types/node": "^20.10.5",
     "typescript": "^5.3.3"
   }
