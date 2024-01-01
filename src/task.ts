@@ -7,7 +7,7 @@ type Task = () => Promise<unknown>;
 export type TaskParams<T extends string> =
   | string
   | [string, { env: NodeJS.ProcessEnv }]
-  | ((tasks: Tasks<T>, run: Runner) => Promise<unknown>);
+  | ((x: Runner & Tasks<T>) => Promise<unknown>);
 
 export function createTasks<T extends string>(
   from: Record<T, TaskParams<T>>,
@@ -27,7 +27,7 @@ export function createTasks<T extends string>(
     } else if (Array.isArray(taskParams)) {
       task = () => run(...taskParams);
     } else {
-      task = () => taskParams(tasks, run);
+      task = () => taskParams(Object.assign(run, tasks));
     }
 
     return [taskName, task];
