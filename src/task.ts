@@ -1,24 +1,28 @@
 import { Runner } from "./runner.js";
 
-type Tasks<T extends string> = Record<T, Task>;
+type Declarations<T extends PropertyKey> = Record<T, TaskParams<T>>;
 
 type Task = () => Promise<unknown>;
 
-export type TaskParams<T extends string> =
+type Tasks<T extends PropertyKey> = {
+  [P in keyof Declarations<T>]: Task;
+};
+
+export type TaskParams<T extends PropertyKey> =
   | string
   | [string, { env: NodeJS.ProcessEnv }]
   | ((x: Runner & Tasks<T>) => Promise<unknown>);
 
-export function createTasks<T extends string>(
-  from: Record<T, TaskParams<T>>,
-  getRunnerForTask: (taskName: string) => Runner
-): Record<T, Task> {
+export function createTasks<T extends PropertyKey>(
+  from: Declarations<T>,
+  getTaskRunner: (taskName: PropertyKey) => Runner
+): Tasks<T> {
   const fromEntries = Object.entries(from) as [T, TaskParams<T>][];
 
   let tasks: Tasks<T>;
 
   const toEntries = fromEntries.map(([taskName, taskParams]) => {
-    const run = getRunnerForTask(taskName);
+    const run = getTaskRunner(taskName);
 
     let task: Task;
 
@@ -30,10 +34,10 @@ export function createTasks<T extends string>(
       task = () => taskParams(Object.assign(run, tasks));
     }
 
-    return [taskName, task];
+    return [taskName, task] as [T, Task];
   });
 
-  tasks = Object.fromEntries(toEntries) as Record<T, Task>;
+  tasks = Object.fromEntries(toEntries) as Tasks<T>;
 
   return tasks;
 }

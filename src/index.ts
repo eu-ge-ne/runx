@@ -7,7 +7,7 @@ const { npm_package_name = "", npm_lifecycle_event = "" } = process.env;
 
 export function runx<T extends string>(input: Record<T, TaskParams<T>>) {
   const tasks = createTasks(input, (taskName) =>
-    createRunner(`${npm_package_name} [${taskName}]`, {
+    createRunner(`${npm_package_name} [${String(taskName)}]`, {
       env: {
         FORCE_COLOR: "true",
         ...process.env,
